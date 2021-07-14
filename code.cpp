@@ -37,32 +37,18 @@ void shuffle(vector<string> &total_cards)
     }
 }
 
-void update_array(vector<string> &player, vector<string> &card)
-{
-    for (int i = 0; i < 7; i++)
-    {
-        card.erase(find(card.begin(), card.end(), player[i]));
-    }
-}
 int main()
 {
-    // #ifndef ONLINE_JUDGE
-    //     freopen("input.txt", "r", stdin);
-    //     freopen("output.txt", "w", stdout);
-    // #endif
-    //     ios_base::sync_with_stdio(0);
-    //     cin.tie(0);
-    //     cout.tie(0);
     vector<string> total_cards{"R0", "R1", "R2", "R3", "R4", "R5", "R6", "R7", "R8", "R9", "RS",
-                                                                                           "B0",
+                               "B0",
                                "B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "BS",
-                                                                                     "G0",
+                               "G0",
                                "G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8", "G9", "GS",
-                                                                                     "Y0",
+                               "Y0",
                                "Y1", "Y2", "Y3", "Y4", "Y5", "Y6", "Y7", "Y8", "Y9", "YS"};
 
     vector<string> cards(40);
-    int cnt=40;
+    int cnt = 40;
     for (int i = 0; i < 40; i++)
     {
         cards[i] = total_cards[i];
@@ -80,12 +66,10 @@ int main()
         P1[j] = cards[rand() % cnt];
         cnt--;
         cards.erase(find(cards.begin(), cards.end(), P1[j]));
-        
+
         cout << P1[j] << " ";
     }
     cout << endl;
-
-    // update_array(P1, cards);
 
     srand(time(NULL));
     for (int j = 0; j < 7; j++)
@@ -97,8 +81,6 @@ int main()
     }
     // cout << endl;
 
-    // update_array(P2, cards);
-
     srand(time(NULL));
     for (int j = 0; j < 7; j++)
     {
@@ -108,18 +90,12 @@ int main()
         // cout << P3[j] << " ";
     }
     // cout << endl;
-
-    // update_array(P3, cards);
-    // for(int i=0;i<cards.size();i++)
-    // cout<<cards[i]<<" ";
-    // cout<<"\n";
     string topCard = cards[rand() % cnt], temp, emp = "no";
     int i = 0;
-    cout<<topCard<<"\n";
+    cout << topCard << "\n";
 
     while (P1.size() != 0 && P2.size() != 0 && P3.size() != 0)
     {
-        // cout << topCard << "\n";
         if (i == 0)
         {
             playerCall(i);
@@ -127,15 +103,27 @@ int main()
                 cout << P1[i] << " ";
             cout << '\n';
             cin >> temp;
+            if (temp != emp && temp[0] != topCard[0] && temp[1] != topCard[1])
+            {
+                cout << "Wrong Move!! Please try again!\n";
+                cin >> temp;
+            }
+            if (temp != emp && temp[0] != topCard[0] && temp[1] != topCard[1])
+            {
+                cout << "You are not playing according to rules.\nYou Lost!!\nGame ended!!\n";
+                return 0;
+            }
+
             if (temp != emp)
             {
                 cards.push_back(topCard);
                 cnt++;
                 topCard = temp;
-                if (temp[1] == 'S'){
+                if (temp[1] == 'S')
+                {
                     i = (i + 1) % 3;
                     playerCall(i);
-                    cout<<"Skipped\n";
+                    cout << "Skipped\n";
                 }
                 auto it = find(P1.begin(), P1.end(), temp);
                 P1.erase(it);
@@ -143,6 +131,7 @@ int main()
             else
             {
                 P1.push_back(cards[rand() % cnt]);
+                cards.erase(find(cards.begin(), cards.end(), P1.back()));
                 cnt--;
             }
             if (P1.size() == 0)
@@ -157,10 +146,11 @@ int main()
             playerCall(i);
             string temp1 = computerTurn(P2, topCard);
             cout << temp1 << "\n";
-            if (temp1[1] == 'S'){
+            if (temp1[1] == 'S')
+            {
                 i = (i + 1) % 3;
                 playerCall(i);
-                cout<<"Skipped\n";
+                cout << "Skipped\n";
             }
             if (temp1 != emp)
             {
@@ -171,6 +161,7 @@ int main()
             else
             {
                 P2.push_back(cards[rand() % cnt]);
+                cards.erase(find(cards.begin(), cards.end(), P2.back()));
                 cnt--;
             }
             if (P2.size() == 0)
@@ -185,10 +176,11 @@ int main()
             playerCall(2);
             string temp2 = computerTurn(P3, topCard);
             cout << temp2 << "\n";
-            if (temp2[1] == 'S'){
+            if (temp2[1] == 'S')
+            {
                 i = (i + 1) % 3;
                 playerCall(i);
-                cout<<"Skipped\n";
+                cout << "Skipped\n";
             }
             if (temp2 != emp)
             {
@@ -199,6 +191,7 @@ int main()
             else
             {
                 P3.push_back(cards[rand() % cnt]);
+                cards.erase(find(cards.begin(), cards.end(), P3.back()));
                 cnt--;
             }
             if (P3.size() == 0)
